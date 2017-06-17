@@ -1,0 +1,6 @@
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\bin\Debug\IllnessAnalyzer.exe.config
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\bin\Debug\IllnessAnalyzer.exe
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\bin\Debug\IllnessAnalyzer.pdb
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\obj\Debug\IllnessAnalyzer.exe
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\obj\Debug\IllnessAnalyzer.pdb
+c:\users\kaspartilk\documents\visual studio 2017\Projects\NetGroupExercise\IllnessAnalyzer\obj\Debug\IllnessAnalyzer.csprojResolveAssemblyReference.cache
