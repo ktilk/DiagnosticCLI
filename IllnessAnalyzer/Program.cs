@@ -23,10 +23,10 @@ namespace IllnessAnalyzer
             {
                 var disease = new Disease();
                 var words = line.Split(',');
-                disease.Name = words[0];
+                disease.DiseaseName = words[0];
                 for (int i = 1; i < words.Length; i++)
                 {
-                    disease.Symptoms.Add(words[i]);
+                    disease.Symptoms.Add(new Symptom(){SymptomName = words[i]});
                     if (!UniqueSymptoms.Contains(words[i])) UniqueSymptoms.Add(words[i]); //check if symptom is new
                 }
                 Diseases.Add(disease);
@@ -34,10 +34,10 @@ namespace IllnessAnalyzer
 
             }
             Console.WriteLine("Number of diseases: "+Diseases.Count);
-            var diseasesWithMostSymptoms = Diseases.OrderByDescending(d => d.Symptoms.Count).ThenBy(d => d.Name).Take(3);
+            var diseasesWithMostSymptoms = Diseases.OrderByDescending(d => d.Symptoms.Count).ThenBy(d => d.DiseaseName).Take(3);
             foreach (var disease in diseasesWithMostSymptoms)
             {
-                Console.WriteLine("Disease: " + disease.Name + "(" + disease.Symptoms.Count + " symptoms)");
+                Console.WriteLine("Disease: " + disease.DiseaseName + "(" + disease.Symptoms.Count + " symptoms)");
             }
             Console.WriteLine("Number of unique symptoms: " + UniqueSymptoms.Count);
 
