@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IllnessAnalyzer
+namespace DiagnosticCLI
 {
     public class Disease
     {
         //public int Id { get; set; }
         public string DiseaseName { get; set; }
-        public List<Symptom> Symptoms { get; set; }
+        public List<Symptom> Symptoms { get; set; } = new List<Symptom>();
     }
 }
