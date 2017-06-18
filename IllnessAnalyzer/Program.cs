@@ -33,7 +33,7 @@ namespace DiagnosticCLI
                         Symptoms.Add(symp);
                     }
                     symp.OccurenceRate++;
-                    disease.Symptoms.Add(symp);
+                    disease.Symptoms.Add(words[i].Trim());
                 }
                 Diseases.Add(disease);
 
@@ -60,11 +60,11 @@ namespace DiagnosticCLI
             }
 
 
-            var patientSymptoms = Console.ReadLine().Split(','); // get patient symptoms
-            var patientDiseases = new List<Disease>();
-            //var patientDiseases =
-                //Diseases.Where(disease => disease.Symptoms.All(x => patientSymptoms.Contains(x.SymptomName)));
-                //Diseases.Where(disease => patientSymptoms.All(x => disease.Symptoms.Any(s => s.SymptomName == x)));
+            var patientSymptoms = Console.ReadLine().Split(',').Select(s => s.Trim()); // get patient symptoms
+            //var patientDiseases = new List<Disease>();
+            var patientDiseases =
+                //Diseases.Where(disease => disease.Symptoms.All(x => patientSymptoms.Contains(x)));
+                Diseases.Where(disease => patientSymptoms.All(x => disease.Symptoms.Contains(x)));
             foreach (var patientDisease in patientDiseases)
             {
                 Console.WriteLine("Possible disease: " + patientDisease.DiseaseName);
