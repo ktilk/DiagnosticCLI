@@ -61,9 +61,10 @@ namespace DiagnosticCLI
 
 
             var patientSymptoms = Console.ReadLine().Split(','); // get patient symptoms
-            //var patientDiseases = new List<Disease>();
-            var patientDiseases =
-                Diseases.Where(disease => disease.Symptoms.All(x => patientSymptoms.Contains(x.SymptomName)));
+            var patientDiseases = new List<Disease>();
+            //var patientDiseases =
+                //Diseases.Where(disease => disease.Symptoms.All(x => patientSymptoms.Contains(x.SymptomName)));
+                //Diseases.Where(disease => patientSymptoms.All(x => disease.Symptoms.Any(s => s.SymptomName == x)));
             foreach (var patientDisease in patientDiseases)
             {
                 Console.WriteLine("Possible disease: " + patientDisease.DiseaseName);

@@ -8,6 +8,15 @@ namespace DiagnosticCLI
 {
     public class Symptom
     {
+        public Symptom()
+        {
+            
+        }
+
+        public Symptom(string name)
+        {
+            SymptomName = name;
+        }
         public string SymptomName { get; set; }
         public int OccurenceRate { get; set; }
     }
