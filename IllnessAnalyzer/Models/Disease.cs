@@ -10,6 +10,6 @@ namespace DiagnosticCLI
     {
         //public int Id { get; set; }
         public string DiseaseName { get; set; }
-        public List<string> Symptoms { get; set; } = new List<string>();
+        public List<Symptom> Symptoms { get; set; } = new List<Symptom>();
     }
 }
