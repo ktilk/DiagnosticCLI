@@ -15,31 +15,7 @@ namespace DiagnosticCLI
         [STAThread]
         public static void Main(string[] args)
         {
-            var ofd = new OpenFileDialog();
-            //ofd.ShowDialog();
-            //var file = File.ReadAllLines(ofd.FileName);
-            var file = File.ReadAllLines("C: \\Users\\KasparTilk\\Desktop\\assignment and Java templates\\database.csv");
-            foreach (var line in file)
-            {
-                var disease = new Disease();
-                var words = line.Split(',').Select(s => s.Trim()).ToArray();
-                disease.DiseaseName = words[0];
-                for (var i = 1; i < words.Length; i++)
-                {
-                    words[i] = words[i].Trim();
-                    var symp = Symptoms.FirstOrDefault(s => s.SymptomName == words[i]);
-                    //disease.Symptoms.Add(new Symptom(){SymptomName = words[i]});
-                    if (symp == null) // create symptom if does not exist
-                    {
-                        symp = new Symptom(){ SymptomName = words[i]};
-                        Symptoms.Add(symp);
-                    }
-                    //symp.OccurenceRate++;  NOT NEEDED
-                    disease.Symptoms.Add(symp);
-                }
-                Diseases.Add(disease);
-
-            }
+            ReadAndParseCsv();
             Console.WriteLine("Number of diseases: "+Diseases.Count);
             var diseasesWithMostSymptoms = Diseases.OrderByDescending(d => d.Symptoms.Count)
                 .ThenBy(d => d.DiseaseName)
@@ -51,10 +27,7 @@ namespace DiagnosticCLI
             }
             Console.WriteLine();
             Console.WriteLine("Number of unique symptoms: " + Symptoms.Count);
-            //foreach (var symptom in Symptoms)
-            //{
-            //    Console.WriteLine("Symptom '" + symptom.SymptomName + "' number of occurrences: " + symptom.OccurenceRate);
-            //}
+
             var mostPopularSymptoms = CountSymptomOccurrenceRates(Diseases).OrderByDescending(s => s.OccurenceRate).ThenBy(s => s.SymptomName).Take(3);
             Console.WriteLine("Three most popular symptoms:");
             foreach (var symptom in mostPopularSymptoms)
@@ -64,16 +37,41 @@ namespace DiagnosticCLI
 
             // ask patient for symptoms
             //TODO validate user input
+            Console.WriteLine("What symptoms do you have?");
             var patientSymptoms = Console.ReadLine().Split(',').Select(s => s.Trim()).ToList(); // get patient symptoms
-            //var patientDiseases =
-            //    Diseases.Where(disease => patientSymptoms.All(x => disease.Symptoms.Contains(Symptoms.FirstOrDefault(s => s.SymptomName == x))));
             var patientDiseases = GetPossibleDiseases(Diseases, patientSymptoms);
             foreach (var patientDisease in patientDiseases)
             {
                 Console.WriteLine("Possible disease: " + patientDisease.DiseaseName);
             }
-            Console.WriteLine("You have: " + DiagnoseDisease(Diseases).FirstOrDefault().DiseaseName);
+            Console.WriteLine("You have: " + DiagnoseDisease(Diseases).DiseaseName);
             Console.ReadLine();
+        }
+
+        private static void ReadAndParseCsv()
+        {
+            var ofd = new OpenFileDialog();
+            ofd.ShowDialog();
+            var file = File.ReadAllLines(ofd.FileName);
+            //var file = File.ReadAllLines("C: \\Users\\KasparTilk\\Desktop\\assignment and Java templates\\database.csv");
+            foreach (var line in file)
+            {
+                var disease = new Disease();
+                var words = line.Split(',').Select(s => s.Trim()).ToArray();
+                disease.DiseaseName = words[0];
+                for (var i = 1; i < words.Length; i++)
+                {
+                    words[i] = words[i].Trim();
+                    var symp = Symptoms.FirstOrDefault(s => s.SymptomName == words[i]);
+                    if (symp == null) // create symptom if does not exist
+                    {
+                        symp = new Symptom() { SymptomName = words[i] };
+                        Symptoms.Add(symp);
+                    }
+                    disease.Symptoms.Add(symp);
+                }
+                Diseases.Add(disease);
+            }
         }
 
         /// <summary>
@@ -120,14 +118,14 @@ namespace DiagnosticCLI
         }
 
         //TODO lahendada rekursiivselt?
-        public static List<Disease> DiagnoseDisease(List<Disease> diseases)
+        public static Disease DiagnoseDisease(List<Disease> diseases)
         {
             var possibleDiseases = diseases;
             var userSymptoms = new List<string>();
             while (possibleDiseases.Count > 1)
             {
                 var symptom = CountSymptomOccurrenceRates(possibleDiseases).OrderByDescending(s => s.OccurenceRate).FirstOrDefault(s => !userSymptoms.Contains(s.SymptomName)).SymptomName;
-                Console.WriteLine("Do you have: " + symptom + "?");
+                Console.WriteLine("Do you have: " + symptom + "? yes/no");
                 var userInput = Console.ReadLine();
                 switch (userInput)
                 {
@@ -138,9 +136,13 @@ namespace DiagnosticCLI
                     case "no":
                         possibleDiseases = RemoveDiseasesThatDontIncludeSymptom(possibleDiseases, symptom);
                         break;
+                    default:
+                        userSymptoms.Add(symptom);
+                        possibleDiseases = GetPossibleDiseases(possibleDiseases, userSymptoms);
+                        break;
                 }
             }
-            return possibleDiseases;
+            return possibleDiseases.FirstOrDefault();
         }
 
 

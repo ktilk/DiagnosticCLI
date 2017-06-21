@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticCLI", "DiagnosticCLI.csproj", "{62CF004D-CBF9-4D5F-B2F8-045D9EB02C30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagnosticWebApp", "..\DiagnosticWebApp\DiagnosticWebApp.csproj", "{76AC4B4F-4A2E-4779-B81A-86C9E963BE5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{62CF004D-CBF9-4D5F-B2F8-045D9EB02C30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62CF004D-CBF9-4D5F-B2F8-045D9EB02C30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62CF004D-CBF9-4D5F-B2F8-045D9EB02C30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76AC4B4F-4A2E-4779-B81A-86C9E963BE5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76AC4B4F-4A2E-4779-B81A-86C9E963BE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76AC4B4F-4A2E-4779-B81A-86C9E963BE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76AC4B4F-4A2E-4779-B81A-86C9E963BE5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
