@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DiagnosticCLI
+namespace DiagnosticCLI.Models
 {
     public class Disease
     {

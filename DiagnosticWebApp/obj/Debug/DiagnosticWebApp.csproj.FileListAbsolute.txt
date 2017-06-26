@@ -62,6 +62,5 @@ C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\bin\Microsoft.AI.Depe
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\bin\Microsoft.AI.ServerTelemetryChannel.xml
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\bin\Microsoft.AI.WindowsServer.xml
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\bin\Microsoft.AI.Web.xml
-C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\obj\Debug\DiagnosticWebApp.csprojResolveAssemblyReference.cache
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\obj\Debug\DiagnosticWebApp.dll
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticWebApp\obj\Debug\DiagnosticWebApp.pdb

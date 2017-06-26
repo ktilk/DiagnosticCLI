@@ -1,17 +1,35 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@using System.Activities.Statements
+@model DiagnosticWebApp.ViewModels.IndexHomeViewModel
+
+@{
+    ViewBag.Title = "Index";
 }
 
-<p>Number of diseases:</p>
-<p>Three diseases with the most symptoms:</p>
-<p>Number of unique symptoms:</p>
-<p>Three most popular symptoms:</p>
+<h2>Index</h2>
 
-<div>
-    @using (Html.BeginForm())
-    {
-        <input type="file" name="dataFile"/>
-        <br/>
-        <input type="submit"/>
-    }
-</div>
+<p>Three diseases with the most symptoms:</p>
+@foreach (var disease in Model.DiseasesWithMostSymptoms)
+{
+    <p>
+        @Html.DisplayFor(modelItem => disease.DiseaseName)
+    </p>
+}
+<p>Number of unique symptoms:</p>
+    <p>
+        @Model.Symptoms.Count
+    </p>
+<p>Three most popular symptoms:</p>
+@foreach (var symptom in Model.MostPopularSymptoms)
+{
+    <p>
+        @Html.DisplayFor(modelItem => symptom.SymptomName)
+    </p>
+}
+
+<h2>Diagnose</h2>
+@using (Html.BeginForm("DiagnoseDiseases", "Home", FormMethod.Post))
+{
+    <p>What symptoms do you have?</p>
+    <input type="text" name="symptoms"/>
+    <input type="submit"/>
+}

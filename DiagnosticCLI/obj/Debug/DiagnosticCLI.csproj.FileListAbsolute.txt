@@ -7,6 +7,6 @@ C:\Users\KasparTilk\Desktop\DiagnosticCLI\IllnessAnalyzer\obj\Debug\DiagnosticCL
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\bin\Debug\IllnessAnalyzer.exe.config
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\bin\Debug\IllnessAnalyzer.exe
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\bin\Debug\IllnessAnalyzer.pdb
-C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\obj\Debug\DiagnosticCLI.csprojResolveAssemblyReference.cache
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\obj\Debug\IllnessAnalyzer.exe
 C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\obj\Debug\IllnessAnalyzer.pdb
+C:\Users\KasparTilk\Desktop\DiagnosticCLI\DiagnosticCLI\obj\Debug\DiagnosticCLI.csprojResolveAssemblyReference.cache

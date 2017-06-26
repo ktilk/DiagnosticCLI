@@ -5,47 +5,59 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DiagnosticCLI.Models;
 
 namespace DiagnosticCLI
 {
     public class Program
     {
         private static readonly List<Disease> Diseases = new List<Disease>();
-        private static readonly List<Symptom> Symptoms = new List<Symptom>(); // holds all the different symptoms
+        private static readonly List<Symptom> Symptoms = new List<Symptom>(); // all the different symptoms
         [STAThread]
         public static void Main(string[] args)
         {
             ReadAndParseCsv();
-            Console.WriteLine("Number of diseases: "+Diseases.Count);
+            Console.WriteLine("Number of diseases: {0}", Diseases.Count);
             var diseasesWithMostSymptoms = Diseases.OrderByDescending(d => d.Symptoms.Count)
                 .ThenBy(d => d.DiseaseName)
                 .Take(3);
             Console.WriteLine("Three diseases with the most symptoms:");
             foreach (var disease in diseasesWithMostSymptoms)
             {
-                Console.WriteLine("* " + disease.DiseaseName + "(" + disease.Symptoms.Count + " symptoms)");
+                Console.WriteLine("* {0}({1} symptoms)", disease.DiseaseName, disease.Symptoms.Count);
             }
             Console.WriteLine();
-            Console.WriteLine("Number of unique symptoms: " + Symptoms.Count);
+            Console.WriteLine("Number of unique symptoms: {0}", Symptoms.Count);
 
             var mostPopularSymptoms = CountSymptomOccurrenceRates(Diseases).OrderByDescending(s => s.OccurenceRate).ThenBy(s => s.SymptomName).Take(3);
             Console.WriteLine("Three most popular symptoms:");
             foreach (var symptom in mostPopularSymptoms)
             {
-                Console.WriteLine("* " + symptom.SymptomName + "(" + symptom.OccurenceRate + " occurrences)");
+                Console.WriteLine("* {0}({1} occurrences)", symptom.SymptomName, symptom.OccurenceRate);
             }
 
-            // ask patient for symptoms
-            //TODO validate user input
-            Console.WriteLine("What symptoms do you have?");
-            var patientSymptoms = Console.ReadLine().Split(',').Select(s => s.Trim()).ToList(); // get patient symptoms
-            var patientDiseases = GetPossibleDiseases(Diseases, patientSymptoms);
+            Console.WriteLine();
+            var patientDiseases = GetPossibleDiseases(Diseases, GetUserSymptoms());
+            Console.Write("Possible disease(s): ");
             foreach (var patientDisease in patientDiseases)
             {
-                Console.WriteLine("Possible disease: " + patientDisease.DiseaseName);
+                Console.Write(patientDisease.DiseaseName);
+                Console.Write(patientDisease == patientDiseases.Last() ? "." : ", ");
             }
-            Console.WriteLine("You have: " + DiagnoseDisease(Diseases).DiseaseName);
+            Console.WriteLine();
+            Console.WriteLine("You have: {0}", DiagnoseDisease(Diseases).DiseaseName);
             Console.ReadLine();
+        }
+
+        private static List<string> GetUserSymptoms()
+        {
+            var patientSymptoms = "";
+            while (string.IsNullOrEmpty(patientSymptoms))
+            {
+                Console.WriteLine("What symptoms do you have?");
+                patientSymptoms = Console.ReadLine();
+            }
+            return patientSymptoms.Split(',').Select(s => s.Trim()).ToList();
         }
 
         private static void ReadAndParseCsv()
@@ -53,7 +65,6 @@ namespace DiagnosticCLI
             var ofd = new OpenFileDialog();
             ofd.ShowDialog();
             var file = File.ReadAllLines(ofd.FileName);
-            //var file = File.ReadAllLines("C: \\Users\\KasparTilk\\Desktop\\assignment and Java templates\\database.csv");
             foreach (var line in file)
             {
                 var disease = new Disease();
@@ -125,7 +136,7 @@ namespace DiagnosticCLI
             while (possibleDiseases.Count > 1)
             {
                 var symptom = CountSymptomOccurrenceRates(possibleDiseases).OrderByDescending(s => s.OccurenceRate).FirstOrDefault(s => !userSymptoms.Contains(s.SymptomName)).SymptomName;
-                Console.WriteLine("Do you have: " + symptom + "? yes/no");
+                Console.WriteLine("Do you have: {0}? yes/no", symptom);
                 var userInput = Console.ReadLine();
                 switch (userInput)
                 {
