@@ -17,8 +17,37 @@ namespace DiagnosticCLI
         public static void Main(string[] args)
         {
             ReadAndParseCsv();
+
             Console.WriteLine("Number of diseases: {0}", Diseases.Count);
-            var diseasesWithMostSymptoms = Diseases.OrderByDescending(d => d.Symptoms.Count)
+            DisplayThreeDiseasesWithMostSymptoms(Diseases);
+
+            Console.WriteLine();
+            Console.WriteLine("Number of unique symptoms: {0}", Symptoms.Count);
+
+            DisplayThreeMostPopularSymptoms(Symptoms);
+
+            Console.WriteLine();
+            SuggestPossibleDiseasesBySymptoms(Diseases);
+            
+            Console.WriteLine();
+            Console.WriteLine("You have: {0}", DiagnoseDisease(Diseases).DiseaseName);
+            Console.ReadLine();
+        }
+
+        private static void SuggestPossibleDiseasesBySymptoms(List<Disease> diseases)
+        {
+            var patientDiseases = GetPossibleDiseases(diseases, GetUserSymptoms());
+            Console.Write("Possible disease(s): ");
+            foreach (var patientDisease in patientDiseases)
+            {
+                Console.Write(patientDisease.DiseaseName);
+                Console.Write(patientDisease == patientDiseases.Last() ? "." : ", ");
+            }
+        }
+
+        private static void DisplayThreeDiseasesWithMostSymptoms(List<Disease> diseases)
+        {
+            var diseasesWithMostSymptoms = diseases.OrderByDescending(d => d.Symptoms.Count)
                 .ThenBy(d => d.DiseaseName)
                 .Take(3);
             Console.WriteLine("Three diseases with the most symptoms:");
@@ -26,27 +55,6 @@ namespace DiagnosticCLI
             {
                 Console.WriteLine("* {0}({1} symptoms)", disease.DiseaseName, disease.Symptoms.Count);
             }
-            Console.WriteLine();
-            Console.WriteLine("Number of unique symptoms: {0}", Symptoms.Count);
-
-            var mostPopularSymptoms = CountSymptomOccurrenceRates(Diseases).OrderByDescending(s => s.OccurenceRate).ThenBy(s => s.SymptomName).Take(3);
-            Console.WriteLine("Three most popular symptoms:");
-            foreach (var symptom in mostPopularSymptoms)
-            {
-                Console.WriteLine("* {0}({1} occurrences)", symptom.SymptomName, symptom.OccurenceRate);
-            }
-
-            Console.WriteLine();
-            var patientDiseases = GetPossibleDiseases(Diseases, GetUserSymptoms());
-            Console.Write("Possible disease(s): ");
-            foreach (var patientDisease in patientDiseases)
-            {
-                Console.Write(patientDisease.DiseaseName);
-                Console.Write(patientDisease == patientDiseases.Last() ? "." : ", ");
-            }
-            Console.WriteLine();
-            Console.WriteLine("You have: {0}", DiagnoseDisease(Diseases).DiseaseName);
-            Console.ReadLine();
         }
 
         private static List<string> GetUserSymptoms()
@@ -83,6 +91,7 @@ namespace DiagnosticCLI
                 }
                 Diseases.Add(disease);
             }
+            CountSymptomOccurrenceRates(Diseases);
         }
 
         /// <summary>
@@ -98,10 +107,11 @@ namespace DiagnosticCLI
 
         public static void DisplayThreeMostPopularSymptoms(List<Symptom> symptoms)
         {
+            Console.WriteLine("Three most popular symptoms:");
             var mostPopularSymptoms = symptoms.OrderByDescending(s => s.OccurenceRate).ThenBy(s => s.SymptomName).Take(3);
             foreach (var symptom in mostPopularSymptoms)
             {
-                Console.WriteLine("Symptom: " + symptom.SymptomName + "(" + symptom.OccurenceRate + " occurrences)");
+                Console.WriteLine("* {0}({1} occurrences)", symptom.SymptomName, symptom.OccurenceRate);
             }
         }
 
@@ -122,40 +132,43 @@ namespace DiagnosticCLI
             }
             return symptoms;
         }
-
-        public static List<Disease> RemoveDiseasesThatDontIncludeSymptom(List<Disease> diseases, string symptom)
+        /// <summary>
+        /// Removes diseases that don't include given symptom.
+        /// </summary>
+        /// <param name="diseases"></param>
+        /// <param name="symptom"></param>
+        /// <returns></returns>
+        public static List<Disease> RemoveDiseasesWithoutSymptom(List<Disease> diseases, string symptom)
         {
             return diseases.Where(d => d.Symptoms.All(s => s.SymptomName != symptom)).ToList();
         }
 
-        //TODO lahendada rekursiivselt?
         public static Disease DiagnoseDisease(List<Disease> diseases)
         {
-            var possibleDiseases = diseases;
+            var possibleDiseases = diseases; //diseases the patient could possibly have
             var userSymptoms = new List<string>();
             while (possibleDiseases.Count > 1)
             {
+                //get the most probable symptom (that has not been asked yet) from possible diseases 
                 var symptom = CountSymptomOccurrenceRates(possibleDiseases).OrderByDescending(s => s.OccurenceRate).FirstOrDefault(s => !userSymptoms.Contains(s.SymptomName)).SymptomName;
                 Console.WriteLine("Do you have: {0}? yes/no", symptom);
                 var userInput = Console.ReadLine();
                 switch (userInput)
                 {
                     case "yes":
-                        userSymptoms.Add(symptom);
+                        userSymptoms.Add(symptom); //add symptom to user symptoms and get new list of diseases
                         possibleDiseases = GetPossibleDiseases(possibleDiseases, userSymptoms);
                         break;
                     case "no":
-                        possibleDiseases = RemoveDiseasesThatDontIncludeSymptom(possibleDiseases, symptom);
+                        possibleDiseases = RemoveDiseasesWithoutSymptom(possibleDiseases, symptom); //remove diseases that don't include this symptom
                         break;
-                    default:
+                    default: //default answer is "yes"
                         userSymptoms.Add(symptom);
                         possibleDiseases = GetPossibleDiseases(possibleDiseases, userSymptoms);
                         break;
                 }
             }
-            return possibleDiseases.FirstOrDefault();
+            return possibleDiseases.FirstOrDefault(); //return the only disease in list
         }
-
-
     }
 }
